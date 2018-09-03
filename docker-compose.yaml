@@ -82,6 +82,7 @@ services:
       - --log-file=/log/pump.log
     depends_on:
       - "pd0"
+      - "tikv0"
       - "kafka0"
     restart: on-failure
   tidb0:
@@ -102,6 +103,23 @@ services:
     depends_on:
       - "tikv0"
       - "pump0"
+    restart: on-failure
+  tidb1:
+    image: pingcap/tidb:latest
+    ports:
+      - "4000:4000"
+      - "10080:10080"
+    volumes:
+      - ./config/tidb.toml:/tidb.toml:ro
+      - ./tmp:/tmp
+      - ./log/tidb0:/log
+    command:
+      - --store=tikv
+      - --path=pd0:2379
+      - --config=/tidb.toml
+      - --log-file=/log/tidb.log
+    depends_on:
+      - "tikv0"
     restart: on-failure
   drainer0:
     image: pingcap/tidb-binlog:latest
