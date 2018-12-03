@@ -20,30 +20,6 @@ services:
       - --data-dir=/data
       - --log-file=/log/pd.log
     restart: on-failure
-  zk0:
-    image: zookeeper:latest
-    ports:
-      - "2181:2181"
-    volumes:
-      - ./data/zk0/data:/data
-      - ./data/zk0/datalog:/datalog
-    restart: on-failure
-  kafka0:
-    image: wurstmeister/kafka:latest
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: "kafka0"
-      KAFKA_ZOOKEEPER_CONNECT: zk0:2181
-      KAFKA_MESSAGE_MAX_BYTES: 20000000
-      KAFKA_LOG_DIRS: /data
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./data/kafka0:/data
-      - ./log/kafka0:/opt/kafka/logs
-    depends_on:
-      - "zk0"
-    restart: on-failure
   tikv0:
     image: pingcap/tikv:latest
     ports:
@@ -70,20 +46,16 @@ services:
       - ./config/pump.toml:/pump.toml:ro
       - ./data/pump0:/data
       - ./log/pump0:/log
-      - ./tmp:/tmp
     command:
       - /pump
       - --addr=pump0:8250
       - --pd-urls=http://pd0:2379
-      - --kafka-addrs=kafka0:9092
-      - --socket=unix:///tmp/pump.sock
       - --config=/pump.toml
       - --data-dir=/data
       - --log-file=/log/pump.log
     depends_on:
       - "pd0"
       - "tikv0"
-      - "kafka0"
     restart: on-failure
   tidb0:
     image: pingcap/tidb:latest
@@ -92,27 +64,24 @@ services:
       - "10080:10080"
     volumes:
       - ./config/tidb.toml:/tidb.toml:ro
-      - ./tmp:/tmp
       - ./log/tidb0:/log
     command:
       - --store=tikv
       - --path=pd0:2379
-      - --binlog-socket=/tmp/pump.sock
       - --config=/tidb.toml
       - --log-file=/log/tidb.log
     depends_on:
       - "tikv0"
       - "pump0"
     restart: on-failure
-  tidb1:
+  tidb-no-binlog0:
     image: pingcap/tidb:latest
     ports:
       - "4000:4000"
       - "10080:10080"
     volumes:
-      - ./config/tidb.toml:/tidb.toml:ro
-      - ./tmp:/tmp
-      - ./log/tidb0:/log
+      - ./config/tidb-no-binlog.toml:/tidb.toml:ro
+      - ./log/tidb-no-binlog0:/log
     command:
       - --store=tikv
       - --path=pd0:2379
@@ -135,7 +104,6 @@ services:
       - /drainer
       - --addr=drainer0:8249
       - --pd-urls=http://pd0:2379
-      - --kafka-addrs=kafka0:9092
       - --config=/drainer.toml
       - --data-dir=/data
       - --log-file=/log/drainer.log
