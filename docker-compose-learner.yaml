@@ -1,0 +1,21 @@
+version: '2.3'
+
+services:
+  tikv-learner0:
+    image: hub.pingcap.net/pingcap/tikv:flash-raft
+    ports:
+      - "20170:20170"
+    extra_hosts:
+      - "ch:${HOST_IP}"
+    volumes:
+      - ./config/tikv-learner.toml:/tikv.toml:ro
+      - ./data/tikv-learner0:/data
+      - ./log/tikv-learner0:/log
+    command:
+      - --addr=0.0.0.0:20170
+      - --advertise-addr=tikv-learner0:20170
+      - --pd=pd0:2379
+      - --config=/tikv.toml
+      - --data-dir=/data
+      - --log-file=/log/tikv.log
+    restart: on-failure
