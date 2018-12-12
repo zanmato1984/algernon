@@ -11,7 +11,7 @@ if [ -z $1 ] || [ "$1" == "-all" ]; then
   fi
   docker-compose up --scale tidb-no-binlog0=0
 elif [ "$1" == "-no-binlog" ]; then
-  docker-compose up --scale zk0=0 --scale kafka0=0 --scale pump0=0 --scale tidb0=0 --scale drainer0=0
+  docker-compose up --scale pump0=0 --scale tidb0=0 --scale drainer0=0
 elif [ "$1" == "-no-drainer" ]; then
   docker-compose up --scale tidb-no-binlog0=0 --scale drainer0=0
 else
