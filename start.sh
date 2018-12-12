@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function print_usage() {
-  echo "[bin] -raft/-no-binlog/-no-drainer/-all"
+  echo "[bin] -no-binlog/-no-drainer/-all"
 }
 
 if [ -z $1 ] || [ "$1" == "-all" ]; then
@@ -10,12 +10,10 @@ if [ -z $1 ] || [ "$1" == "-all" ]; then
     exit 1
   fi
   docker-compose up --scale tidb-no-binlog0=0
-elif [ "$1" == "-raft" ]; then
-  docker-compose up --scale pump0=0 --scale tidb0=0 --scale drainer0=0
 elif [ "$1" == "-no-binlog" ]; then
-  docker-compose up --scale tikv-learner0=0 --scale pump0=0 --scale tidb0=0 --scale drainer0=0
+  docker-compose up --scale pump0=0 --scale tidb0=0 --scale drainer0=0
 elif [ "$1" == "-no-drainer" ]; then
-  docker-compose up --scale tikv-learner0=0 --scale tidb-no-binlog0=0 --scale drainer0=0
+  docker-compose up --scale tidb-no-binlog0=0 --scale drainer0=0
 else
   print_usage
   exit 1
