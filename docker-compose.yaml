@@ -21,7 +21,9 @@ services:
       - --log-file=/log/pd.log
     restart: on-failure
   tikv0:
-    image: pingcap/tikv:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-tikv
     ports:
       - "20160:20160"
     volumes:
@@ -29,6 +31,10 @@ services:
       - ./data/tikv0:/data
       - ./log/tikv0:/log
     command:
+      - pd0:2379
+      - --timeout=5
+      - --
+      - /tikv-server
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv0:20160
       - --pd=pd0:2379
@@ -37,6 +43,30 @@ services:
       - --log-file=/log/tikv.log
     depends_on:
       - "pd0"
+    restart: on-failure
+  tikv-learner0:
+    build:
+      context: .
+      dockerfile: Dockerfile-tikv-learner
+    ports:
+      - "20170:20170"
+    volumes:
+      - ./config/tikv-learner.toml:/tikv.toml:ro
+      - ./data/tikv-learner0:/data
+      - ./log/tikv-learner0:/log
+    command:
+      - tikv0:20160
+      - --timeout=5
+      - --
+      - /tikv-server
+      - --addr=0.0.0.0:20170
+      - --advertise-addr=tikv-learner0:20170
+      - --pd=pd0:2379
+      - --config=/tikv.toml
+      - --data-dir=/data
+      - --log-file=/log/tikv.log
+    depends_on:
+      - "tikv0"
     restart: on-failure
   pump0:
     image: pingcap/tidb-binlog:latest
@@ -54,7 +84,6 @@ services:
       - --data-dir=/data
       - --log-file=/log/pump.log
     depends_on:
-      - "pd0"
       - "tikv0"
     restart: on-failure
   tidb0:
@@ -72,23 +101,38 @@ services:
       - --log-file=/log/tidb.log
     depends_on:
       - "tikv0"
-      - "pump0"
     restart: on-failure
-  tidb-no-binlog0:
+  tidb-raft0:
     image: pingcap/tidb:latest
     ports:
       - "4000:4000"
       - "10080:10080"
     volumes:
-      - ./config/tidb-no-binlog.toml:/tidb.toml:ro
-      - ./log/tidb-no-binlog0:/log
+      - ./config/tidb.toml:/tidb.toml:ro
+      - ./log/tidb0:/log
     command:
       - --store=tikv
       - --path=pd0:2379
       - --config=/tidb.toml
       - --log-file=/log/tidb.log
     depends_on:
-      - "tikv0"
+      - "tikv-learner0"
+    restart: on-failure
+  tidb-binlog0:
+    image: pingcap/tidb:latest
+    ports:
+      - "4000:4000"
+      - "10080:10080"
+    volumes:
+      - ./config/tidb-binlog.toml:/tidb.toml:ro
+      - ./log/tidb-binlog0:/log
+    command:
+      - --store=tikv
+      - --path=pd0:2379
+      - --config=/tidb.toml
+      - --log-file=/log/tidb.log
+    depends_on:
+      - "pump0"
     restart: on-failure
   drainer0:
     image: pingcap/tidb-binlog:latest
