@@ -32,7 +32,6 @@ services:
       - ./log/tikv0:/log
     command:
       - pd0:2379
-      - --timeout=5
       - --
       - /tikv-server
       - --addr=0.0.0.0:20160
@@ -56,7 +55,6 @@ services:
       - ./log/tikv-learner0:/log
     command:
       - tikv0:20160
-      - --timeout=5
       - --
       - /tikv-server
       - --addr=0.0.0.0:20170
