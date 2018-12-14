@@ -15,7 +15,7 @@ elif [ "$1" == "-raft2" ]; then
   docker-compose exec pd0 /pd-ctl -d config set max-merge-region-keys 0
   docker-compose exec pd0 /pd-ctl -d config set max-merge-region-value 0
 elif [ "$1" == "-raft3" ]; then
-  docker-compose run -d tidb-raft0
+  docker-compose -f docker-compose-tidb.yaml up -d
 elif [ "$1" == "-pump" ]; then
   docker-compose up -d --scale tikv-learner0=0 --scale tidb-raft0=0 --scale tidb0=0 --scale drainer0=0
 elif [ "$1" == "-binlog" ]; then
