@@ -1,0 +1,21 @@
+version: '2.3'
+
+services:
+  go-ycsb0:
+    image: pingcap/go-ycsb:latest
+    ports:
+      - "6060:6060"
+    volumes:
+      - ./config/go-ycsb.conf:/go-ycsb.conf:ro
+        #     command:
+        #       - commload
+        #       - commmysql
+        #       - comm-P
+        #       - comm/go-ycsb.conf
+        #       - comm-p
+        #       - commmysql.host=tidb0
+        #       - comm-p
+        #       - commmysql.port=4000
+        #       - comm-p
+        #       - commmysql.user=root
+    restart: on-failure
