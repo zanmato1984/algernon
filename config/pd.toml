@@ -47,3 +47,8 @@ disable = true
 [replication]
 location-labels = []
 max-replicas = 1
+
+[label-property]
+[[label-property.slave]]
+key = "zone"
+value = "engine"

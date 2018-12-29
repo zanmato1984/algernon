@@ -11,7 +11,7 @@
 [readpool.coprocessor]
 
 [server]
-labels = {  }
+labels = { zone = engine }
 # engine-addr = "ch:3930"
 engine-addr = "172.17.0.1:3930"
 
