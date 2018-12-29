@@ -26,8 +26,8 @@ max-pending-peer-count = 16
 max-snapshot-count = 3
 max-store-down-time = "3000h"
 merge-schedule-limit = 0
-region-schedule-limit = 0
-replica-schedule-limit = 0
+region-schedule-limit = 4
+replica-schedule-limit = 8
 split-merge-interval = "1h"
 tolerant-size-ratio = 5.0
 
