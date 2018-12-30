@@ -26,9 +26,14 @@ labels = {  }
 [raftstore]
 raftdb-path = ""
 sync-log = true
-consistency-check-interval = "1s"
+consistency-check-interval = "10s"
+raft-log-gc-count-limit = 256
 
 [coprocessor]
+region-max-keys = 144000
+region-split-keys = 96000
+region-max-size = "144MB"
+region-split-size = "96MB"
 
 [rocksdb]
 wal-dir = ""

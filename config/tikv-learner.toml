@@ -14,6 +14,7 @@
 labels = { zone = "engine" }
 # engine-addr = "ch:3930"
 engine-addr = "172.17.0.1:3930"
+# engine-addr = "192.168.65.2:3930"
 
 [storage]
 
@@ -28,6 +29,9 @@ engine-addr = "172.17.0.1:3930"
 [raftstore]
 raftdb-path = ""
 sync-log = true
+max-leader-missing-duration = "22s"
+abnormal-leader-missing-duration = "21s"
+peer-stale-state-check-interval = "20s"
 
 [coprocessor]
 
