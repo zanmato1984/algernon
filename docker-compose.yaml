@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   pd0:
-    image: hub.pingcap.net/pingcap/pd:flash-raft-181229
+    image: hub.pingcap.net/pingcap/pd:flash-raft-190107
     ports:
       - "2379:2379"
     volumes:
