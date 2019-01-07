@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function print_usage() {
-  echo "[bin] -raft [ycsb]/-pump/-binlog"
+  echo "[bin] -raft [ycsb]/-pump/-binlog/-hw"
 }
 
 if [ -z $1 ]; then
