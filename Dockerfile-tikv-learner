@@ -1,4 +1,4 @@
-FROM hub.pingcap.net/pingcap/tikv-learner:flash-raft-190111 as builder
+FROM hub.pingcap.net/pingcap/tikv-learner:flash-raft-190114 as builder
 
 COPY wait-for/wait-for /wait-for
 
