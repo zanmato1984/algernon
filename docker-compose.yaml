@@ -85,7 +85,7 @@ services:
       - "tikv0"
     restart: on-failure
   tidb0:
-    image: pingcap/tidb:latest
+    image: pingcap/tidb:v2.1.4
     ports:
       - "4000:4000"
       - "10080:10080"
