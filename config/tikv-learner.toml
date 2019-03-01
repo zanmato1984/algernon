@@ -12,8 +12,9 @@
 
 [server]
 labels = { zone = "engine" }
-# engine-addr = "ch:3930"
+# Linux
 engine-addr = "172.17.0.1:3930"
+# Mac (seemingly)
 # engine-addr = "192.168.65.2:3930"
 
 [storage]

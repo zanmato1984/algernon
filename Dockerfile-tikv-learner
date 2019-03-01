@@ -1,5 +1,0 @@
-FROM hub.pingcap.net/pingcap/tikv-learner:flash-raft-190114
-
-COPY wait-for/wait-for /wait-for
-
-ENTRYPOINT ["/wait-for"]
