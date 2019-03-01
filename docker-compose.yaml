@@ -38,6 +38,40 @@ services:
     depends_on:
       - "pd0"
     restart: on-failure
+  tidb0:
+    image: hub.pingcap.net/ci-build/tidb:release-2.1
+    ports:
+      - "4000:4000"
+      - "10080:10080"
+    volumes:
+      - ./config/tidb.toml:/tidb.toml:ro
+      - ./log/tidb0:/log
+    command:
+      - --store=tikv
+      - --path=pd0:2379
+      - --config=/tidb.toml
+      - --log-file=/log/tidb.log
+    depends_on:
+      - "tikv0"
+    restart: on-failure
+  tiflash0:
+    image: hub.pingcap.net/tiflash/tics
+    ports:
+      - "3930:3930"
+      - "9000:9000"
+      - "8123:8123"
+      - "9009:9009"
+    volumes:
+      - ./config/tiflash.xml:/config.xml:ro
+      - ./config/tiflash-users.xml:/users.xml:ro
+      - ./data/tiflash0:/data
+      - ./log/tiflash0:/log
+    command:
+      - --config-file
+      - /config.xml
+    depends_on:
+      - "tidb0"
+    restart: on-failure
   tikv-learner0:
     image: hub.pingcap.net/pingcap/tikv-learner:flash-raft-190114
     ports:
@@ -55,20 +89,5 @@ services:
       - --log-file=/log/tikv.log
     depends_on:
       - "tikv0"
-    restart: on-failure
-  tidb0:
-    image: hub.pingcap.net/ci-build/tidb:release-2.1
-    ports:
-      - "4000:4000"
-      - "10080:10080"
-    volumes:
-      - ./config/tidb.toml:/tidb.toml:ro
-      - ./log/tidb0:/log
-    command:
-      - --store=tikv
-      - --path=pd0:2379
-      - --config=/tidb.toml
-      - --log-file=/log/tidb.log
-    depends_on:
-      - "tikv0"
+      - "tiflash0"
     restart: on-failure
