@@ -21,6 +21,7 @@ services:
       - --log-file=/log/pd.log
     restart: on-failure
   tikv0:
+    image: hub.pingcap.net/pingcap/tikv-leader:flash-raft-190114
     ports:
       - "20160:20160"
     volumes:
@@ -28,9 +29,6 @@ services:
       - ./data/tikv0:/data
       - ./log/tikv0:/log
     command:
-      - pd0:2379
-      - --
-      - /tikv-server
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv0:20160
       - --pd=pd0:2379
@@ -41,6 +39,7 @@ services:
       - "pd0"
     restart: on-failure
   tikv-learner0:
+    image: hub.pingcap.net/pingcap/tikv-learner:flash-raft-190114
     ports:
       - "20170:20170"
     volumes:
@@ -48,9 +47,6 @@ services:
       - ./data/tikv-learner0:/data
       - ./log/tikv-learner0:/log
     command:
-      - tikv0:20160
-      - --
-      - /tikv-server
       - --addr=0.0.0.0:20170
       - --advertise-addr=tikv-learner0:20170
       - --pd=pd0:2379
