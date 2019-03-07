@@ -55,7 +55,7 @@ services:
       - "tikv0"
     restart: on-failure
   tiflash0:
-    image: hub.pingcap.net/tiflash/tics
+    image: hub.pingcap.net/tiflash/tics:raft
     ports:
       - "3930:3930"
       - "9000:9000"
