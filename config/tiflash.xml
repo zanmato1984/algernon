@@ -18,11 +18,15 @@
     <raft>
         <service_addr>0.0.0.0:3930</service_addr>
         <kvstore_path>/data/kvstore</kvstore_path>
-        <!--pd_addr>127.0.0.1:2379</pd_addr-->
+        <pd_addr>127.0.0.1:2379</pd_addr>
     </raft>
 
     <tidb>
+        <service_ip>192.168.65.2</service_ip>
+        <!--Linux-->
         <service_ip>172.17.0.1</service_ip>
+        <!--Mac (seemingly)-->
+        <!--service_ip>192.168.65.2</service_ip-->
         <status_port>10080</status_port>
     </tidb>
 
