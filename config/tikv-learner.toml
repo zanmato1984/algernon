@@ -11,7 +11,11 @@
 [readpool.coprocessor]
 
 [server]
-labels = {  }
+labels = { zone = "engine" }
+# Linux
+engine-addr = "172.17.0.1:3930"
+# Mac (seemingly)
+# engine-addr = "192.168.65.2:3930"
 
 [storage]
 
@@ -26,14 +30,11 @@ labels = {  }
 [raftstore]
 raftdb-path = ""
 sync-log = true
-consistency-check-interval = "10s"
-raft-log-gc-count-limit = 256
+max-leader-missing-duration = "22s"
+abnormal-leader-missing-duration = "21s"
+peer-stale-state-check-interval = "20s"
 
 [coprocessor]
-region-max-keys = 144000
-region-split-keys = 96000
-region-max-size = "144MB"
-region-split-size = "96MB"
 
 [rocksdb]
 wal-dir = ""
