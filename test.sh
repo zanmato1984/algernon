@@ -26,7 +26,7 @@ elif [ "$1" == "tiflash-q" ]; then
     print_usage
     exit 1
   else
-    docker-compose exec tiflash0 ./theflash client --host="127.0.0.1" --query="$2"
+    docker-compose exec tiflash0 ./tics/theflash client --host="127.0.0.1" --query="$2"
   fi
 else
   print_usage
