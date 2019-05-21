@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   pd0:
-    image: hub.pingcap.net/pingcap/pd:flash-raft-190114
+    image: hub.pingcap.net/tiflash/pd:190508
     ports:
       - "2379:2379"
     volumes:
@@ -21,7 +21,7 @@ services:
       - --log-file=/log/pd.log
     restart: on-failure
   tikv0:
-    image: pingcap/tikv:latest
+    image: hub.pingcap.net/tiflash/tikv-leader:190508
     ports:
       - "20160:20160"
     volumes:
@@ -73,7 +73,7 @@ services:
       - "tidb0"
     restart: on-failure
   tikv-learner0:
-    image: hub.pingcap.net/pingcap/tikv-learner:flash-raft-190114
+    image: hub.pingcap.net/tiflash/tikv-learner:190508
     ports:
       - "20170:20170"
     volumes:
