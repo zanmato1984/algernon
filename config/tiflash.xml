@@ -22,6 +22,7 @@
         <pd_addr>172.17.0.1:2379</pd_addr>
         <!--Mac (seemingly)-->
         <!--pd_addr>192.168.65.2:2379</pd_addr-->
+        <ignore_databases>system</ignore_databases>
     </raft>
 
     <http_port>8123</http_port>
