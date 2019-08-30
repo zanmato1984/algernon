@@ -61,6 +61,7 @@ services:
       - "9000:9000"
       - "8123:8123"
       - "9009:9009"
+      - "20171:20171"
     volumes:
       - ./config/tiflash.xml:/config.xml:ro
       - ./config/tiflash-users.xml:/users.xml:ro
