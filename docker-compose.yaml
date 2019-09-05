@@ -55,7 +55,7 @@ services:
       - "tikv0"
     restart: on-failure
   tiflash0:
-    image: hub.pingcap.net/tiflash/tics:${TAG:-master}
+    image: hub.pingcap.net/tiflash/tics:${TAG:-pr-161}
     ports:
       - "3930:3930"
       - "9000:9000"
