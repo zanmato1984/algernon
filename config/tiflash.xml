@@ -19,9 +19,9 @@
         <service_addr>0.0.0.0:3930</service_addr>
         <kvstore_path>/data/kvstore</kvstore_path>
         <!--Linux-->
-        <!--pd_addr>172.17.0.1:2379</pd_addr-->
+        <pd_addr>172.17.0.1:2379</pd_addr>
         <!--Mac (seemingly)-->
-        <pd_addr>192.168.65.2:2379</pd_addr>
+        <!--pd_addr>192.168.65.2:2379</pd_addr-->
         <ignore_databases>system, tispark_test</ignore_databases>
     </raft>
 
