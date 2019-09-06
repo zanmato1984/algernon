@@ -53,6 +53,8 @@ services:
       - --log-file=/log/tidb.log
     depends_on:
       - "tikv0"
+    links:
+      - "tiflash0:tikv-learner0"
     restart: on-failure
   tiflash0:
     image: hub.pingcap.net/tiflash/tics:${TAG:-pr-161}
@@ -70,8 +72,6 @@ services:
     command:
       - --config-file
       - /config.xml
-    depends_on:
-      - "tidb0"
     restart: on-failure
   tikv-learner0:
     image: hub.pingcap.net/tiflash/tikv-learner:190508
