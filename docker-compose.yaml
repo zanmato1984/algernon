@@ -78,12 +78,7 @@ services:
       LISTEN:
         :20171
       TALK:
-        # Non-debug mode.
-        tiflash0:20171
-        # Debug mode on Linux.
-        # 172.17.0.1:20171
-        # Debug mode on Mac (seemingly).
-        # 192.168.65.2:20171
+        ${FLASH_ADDR:-tiflash0}:20171
       TIMEOUT_CLIENT: 3600s
       TIMEOUT_CLIENT_FIN: 3600s
       TIMEOUT_SERVER: 3600s
