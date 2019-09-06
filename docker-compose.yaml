@@ -93,11 +93,14 @@ services:
       - "tiflash0"
     restart: on-failure
   tikv-learner0:
-    image: hub.pingcap.net/tiflash/tikv-learner:190508
+    build:
+      context: ./
+      dockerfile: tikv-learner/Dockerfile-tikv-learner
+      args:
+        ENGINE_ADDR: ${ENGINE_ADDR:-172.17.0.1}
     ports:
       - "20170:20170"
     volumes:
-      - ./config/tikv-learner.toml:/tikv.toml:ro
       - ./data/tikv-learner0:/data
       - ./log/tikv-learner0:/log
     command:
