@@ -12,9 +12,9 @@
 
 [server]
 labels = { zone = "engine" }
-# Linux
+# Non-debug mode, or debug mode on Linux.
 engine-addr = "172.17.0.1:3930"
-# Mac (seemingly)
+# Debug mode on Mac (seemingly).
 # engine-addr = "192.168.65.2:3930"
 
 [storage]

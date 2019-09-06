@@ -54,7 +54,7 @@ services:
     depends_on:
       - "tikv0"
     links:
-      - "tiflash0:tikv-learner0"
+      - "tiflash-gateway0:tikv-learner0"
     restart: on-failure
   tiflash0:
     image: hub.pingcap.net/tiflash/tics:${TAG:-pr-161}
@@ -63,7 +63,6 @@ services:
       - "9000:9000"
       - "8123:8123"
       - "9009:9009"
-      - "20171:20171"
     volumes:
       - ./config/tiflash.xml:/config.xml:ro
       - ./config/tiflash-users.xml:/users.xml:ro
@@ -72,6 +71,26 @@ services:
     command:
       - --config-file
       - /config.xml
+    restart: on-failure
+  tiflash-gateway0:
+    image: tecnativa/tcp-proxy
+    environment:
+      LISTEN:
+        :20171
+      TALK:
+        # Non-debug mode.
+        tiflash0:20171
+        # Debug mode on Linux.
+        # 172.17.0.1:20171
+        # Debug mode on Mac (seemingly).
+        # 192.168.65.2:20171
+      TIMEOUT_CLIENT: 3600s
+      TIMEOUT_CLIENT_FIN: 3600s
+      TIMEOUT_SERVER: 3600s
+      TIMEOUT_SERVER_FIN: 3600s
+      TIMEOUT_TUNNEL: 3600s
+    depends_on:
+      - "tiflash0"
     restart: on-failure
   tikv-learner0:
     image: hub.pingcap.net/tiflash/tikv-learner:190508
@@ -89,6 +108,5 @@ services:
       - --data-dir=/data
       - --log-file=/log/tikv.log
     depends_on:
-      - "tikv0"
-      - "tiflash0"
+      - "tiflash-gateway0"
     restart: on-failure
