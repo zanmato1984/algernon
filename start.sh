@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ue
+set -e
 
 function print_usage() {
   echo "./start.sh [-raft]"
