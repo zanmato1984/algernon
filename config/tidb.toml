@@ -81,7 +81,7 @@ commit-timeout = "60s"
 grpc-connection-count = 4
 grpc-keepalive-time = 10
 grpc-keepalive-timeout = 3
-max-batch-size = 0
+max-batch-size = 128
 tikv-heavy-load-to-batch = 30
 
 [txn-local-latches]
