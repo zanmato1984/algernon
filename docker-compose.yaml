@@ -78,7 +78,7 @@ services:
       LISTEN:
         :20171
       TALK:
-        ${FLASH_ADDR:-tiflash0}:20171
+        ${FLASH_ADDR:-tiflash0}:3930
       TIMEOUT_CLIENT: 3600s
       TIMEOUT_CLIENT_FIN: 3600s
       TIMEOUT_SERVER: 3600s
