@@ -1,6 +1,6 @@
 FROM hub.pingcap.net/tiflash/tikv-learner:190508
 
-ARG ENGINE_ADDR="172.17.0.1"
+ARG ENGINE_ADDR
 
 RUN echo "Engine address is: ${ENGINE_ADDR}"
 COPY ./config/tikv-learner.toml /tikv.toml

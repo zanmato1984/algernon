@@ -1,10 +1,12 @@
 #!/bin/bash
 
+set -e
+
+source env.sh
+
 function print_usage() {
   echo "./test.sh [hw/ycsb/mysql-q query/tiflash-q query]"
 }
-
-MYSQL_HOST="192.168.65.2"
 
 if [ -z "$1" ]; then
   print_usage
