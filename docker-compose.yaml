@@ -21,7 +21,7 @@ services:
       - --log-file=/log/pd.log
     restart: on-failure
   tikv0:
-    image: hub.pingcap.net/tiflash/tikv-leader:190508
+    image: pingcap/tikv:v3.0.3
     ports:
       - "20160:20160"
     volumes:
@@ -54,8 +54,26 @@ services:
     depends_on:
       - "tikv0"
     restart: on-failure
+  tidb1:
+    image: hub.pingcap.net/tiflash/tidb:cop-190919
+    ports:
+      - "4000:4000"
+      - "10080:10080"
+    volumes:
+      - ./config/tidb.toml:/tidb.toml:ro
+      - ./log/tidb0:/log
+    command:
+      - --store=tikv
+      - --path=pd0:2379
+      - --config=/tidb.toml
+      - --log-file=/log/tidb.log
+    depends_on:
+      - "tiflash-gateway0"
+    links:
+      - "tiflash-gateway0:tikv-learner0"
+    restart: on-failure
   tiflash0:
-    image: hub.pingcap.net/tiflash/tics:${TAG:-master}
+    image: hub.pingcap.net/tiflash/tics:${TAG:-pr-161}
     ports:
       - "3930:3930"
       - "9000:9000"
@@ -69,15 +87,33 @@ services:
     command:
       - --config-file
       - /config.xml
+    restart: on-failure
+  tiflash-gateway0:
+    image: tecnativa/tcp-proxy
+    ports:
+      - "20171:20171"
+    environment:
+      LISTEN:
+        :20171
+      TALK:
+        ${FLASH_ADDR:-tiflash0}:3930
+      TIMEOUT_CLIENT: 3600s
+      TIMEOUT_CLIENT_FIN: 3600s
+      TIMEOUT_SERVER: 3600s
+      TIMEOUT_SERVER_FIN: 3600s
+      TIMEOUT_TUNNEL: 3600s
     depends_on:
-      - "tidb0"
+      - "tiflash0"
     restart: on-failure
   tikv-learner0:
-    image: hub.pingcap.net/tiflash/tikv-learner:190508
+    build:
+      context: ./
+      dockerfile: tikv-learner/Dockerfile-tikv-learner
+      args:
+        ENGINE_ADDR: ${ENGINE_ADDR}
     ports:
       - "20170:20170"
     volumes:
-      - ./config/tikv-learner.toml:/tikv.toml:ro
       - ./data/tikv-learner0:/data
       - ./log/tikv-learner0:/log
     command:
@@ -88,6 +124,5 @@ services:
       - --data-dir=/data
       - --log-file=/log/tikv.log
     depends_on:
-      - "tikv0"
       - "tiflash0"
     restart: on-failure
