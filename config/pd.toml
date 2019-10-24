@@ -50,5 +50,5 @@ max-replicas = 1
 
 [label-property]
 [[label-property.slave]]
-key = "zone"
-value = "engine"
+key = "engine"
+value = "tiflash"

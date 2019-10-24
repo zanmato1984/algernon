@@ -1,4 +1,4 @@
-FROM hub.pingcap.net/tiflash/tikv-learner:190508
+FROM hub.pingcap.net/tiflash/tikv-learner:191023
 
 ARG ENGINE_ADDR
 

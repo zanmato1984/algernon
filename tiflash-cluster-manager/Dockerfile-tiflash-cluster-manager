@@ -1,0 +1,7 @@
+FROM hub.pingcap.net/tiflash/cluster_manage:latest
+
+ARG ENGINE_ADDR
+
+RUN echo "Engine address is: ${ENGINE_ADDR}"
+COPY ./config/tiflash-cluster-manager.xml /config.xml
+RUN sed -i "s/ENGINE_ADDR/${ENGINE_ADDR}/" /config.xml
