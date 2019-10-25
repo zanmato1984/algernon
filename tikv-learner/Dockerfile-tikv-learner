@@ -1,7 +1,0 @@
-FROM hub.pingcap.net/tiflash/tikv-learner:191023
-
-ARG ENGINE_ADDR
-
-RUN echo "Engine address is: ${ENGINE_ADDR}"
-COPY ./config/tikv-learner.toml /tikv.toml
-RUN sed -i "s/ENGINE_ADDR/${ENGINE_ADDR}/" /tikv.toml
