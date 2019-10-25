@@ -82,7 +82,7 @@
     <path>/tmp/tiflash/data/db</path>
 
     <!-- Path to temporary data for processing hard queries. -->
-    <tmp_path>/tmp/tiflash/tmp</tmp_path>
+    <tmp_path>/tmp/tiflash/data/tmp</tmp_path>
 
     <l0_optimize>false</l0_optimize>
 

@@ -64,7 +64,7 @@ services:
     volumes:
       - ./config/tiflash.xml:/config.xml:ro
       - ./config/tiflash-users.xml:/users.xml:ro
-      - ./data/tiflash0:/tmp/tiflash
+      - ./data/tiflash0:/tmp/tiflash/data
       - ./log/tiflash0:/tmp/tiflash/log
     command:
       - --config-file
@@ -113,7 +113,7 @@ services:
     image: hub.pingcap.net/tiflash/cluster_manage:latest
     volumes:
       - ./config/tiflash-cluster-manager.xml:/config.xml:ro
-      - ./log/tiflash-cluster-manager0:/tmp/tiflash/tmp
+      - ./log/tiflash-cluster-manager0:/tmp/tiflash/data/tmp
     command:
       - /config.xml
     depends_on:
