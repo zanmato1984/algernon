@@ -6,8 +6,8 @@
 
     <logger>
         <level>trace</level>
-        <log>/log/server.log</log>
-        <errorlog>/log/error.log</errorlog>
+        <log>/tmp/tiflash/log/server.log</log>
+        <errorlog>/tmp/tiflash/log/error.log</errorlog>
         <size>1000M</size>
         <count>10</count>
         <!-- <console>1</console> --> <!-- Default behavior is autodetection (log to console if not daemon mode and is tty) -->
@@ -16,7 +16,7 @@
     <display_name>the flash</display_name>
 
     <raft>
-        <kvstore_path>/data/kvstore</kvstore_path>
+        <kvstore_path>/tmp/tiflash/data/kvstore</kvstore_path>
         <pd_addr>pd0:2379</pd_addr>
         <ignore_databases>system</ignore_databases>
         <learner_key>engine</learner_key>
@@ -79,10 +79,10 @@
     <persisted_mapping_cache_size>0</persisted_mapping_cache_size>
 
     <!-- Path to data directory, with trailing slash. -->
-    <path>/data/db</path>
+    <path>/tmp/tiflash/data/db</path>
 
     <!-- Path to temporary data for processing hard queries. -->
-    <tmp_path>/data/tmp</tmp_path>
+    <tmp_path>/tmp/tiflash/tmp</tmp_path>
 
     <l0_optimize>false</l0_optimize>
 
