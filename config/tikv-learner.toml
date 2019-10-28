@@ -11,8 +11,8 @@
 [readpool.coprocessor]
 
 [server]
-labels = { zone = "engine" }
-engine-addr = "ENGINE_ADDR:3930"
+labels = { "engine" = "tiflash", "tiflash_http_port" = "8123" }
+engine-addr = "tiflash-gateway0:3930"
 
 [storage]
 
