@@ -74,24 +74,26 @@ services:
     depends_on:
       - "tidb0"
     restart: on-failure
-    # tiflash-gateway0:
-    #   image: tecnativa/tcp-proxy
-    #   environment:
-    #     LISTEN:
-    #       :3930
-    #       :9000
-    #       :8123
-    #       :9009
-    #     TALK:
-    #       ${TIFLASH_ADDR:-tiflash0}:3930
-    #       ${TIFLASH_ADDR:-tiflash0}:9000
-    #       ${TIFLASH_ADDR:-tiflash0}:8123
-    #       ${TIFLASH_ADDR:-tiflash0}:9009
-    #     TIMEOUT_CLIENT: 3600s
-    #     TIMEOUT_CLIENT_FIN: 3600s
-    #     TIMEOUT_SERVER: 3600s
-    #     TIMEOUT_SERVER_FIN: 3600s
-    #     TIMEOUT_TUNNEL: 3600s
-    #   depends_on:
-    #     - "tiflash0"
-    #   restart: on-failure
+  tiflash-gateway0:
+    image: tecnativa/tcp-proxy
+    environment:
+      LISTEN:
+        :3930
+        :9000
+        :8123
+        :9009
+        :20170
+      TALK:
+        ${TIFLASH_ADDR}:3930
+        ${TIFLASH_ADDR}:9000
+        ${TIFLASH_ADDR}:8123
+        ${TIFLASH_ADDR}:9009
+        ${TIFLASH_ADDR}:20170
+      TIMEOUT_CLIENT: 3600s
+      TIMEOUT_CLIENT_FIN: 3600s
+      TIMEOUT_SERVER: 3600s
+      TIMEOUT_SERVER_FIN: 3600s
+      TIMEOUT_TUNNEL: 3600s
+    depends_on:
+      - "tidb0"
+    restart: on-failure
