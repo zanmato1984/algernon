@@ -1,4 +1,5 @@
 data/
 tmp/
 log/
+libtiflash_proxy.dylib
 tics
