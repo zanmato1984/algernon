@@ -1,6 +1,5 @@
 data/
 tmp/
 log/
-tics/
 libtiflash_proxy.dylib
 config/*-preprocessed.toml
