@@ -1,4 +1,5 @@
-config/*preprocessed.xml
 data/
 tmp/
 log/
+libtiflash_proxy.dylib
+config/*-preprocessed.toml
