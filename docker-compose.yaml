@@ -55,7 +55,7 @@ services:
       - "tikv0"
     restart: on-failure
   tiflash0:
-    image: hub.pingcap.net/tiflash/tics:${TAG:-master}
+    image: hub.pingcap.net/tiflash/tiflash:${TAG:-master}
     ports:
       - "3930:3930"
       - "9000:9000"
@@ -63,14 +63,14 @@ services:
       - "9009:9009"
       - "20170:20170"
     volumes:
-      - ./config/tiflash.toml:/config/tiflash.toml:ro
-      - ./config/tiflash-users.toml:/config/tiflash-users.toml:ro
-      - ./config/tikv-learner.toml:/config/tikv-learner.toml:ro
+      - ./config/tiflash.toml:/root/config/tiflash.toml:ro
+      - ./config/tiflash-users.toml:/root/config/tiflash-users.toml:ro
+      - ./config/tikv-learner.toml:/root/config/tikv-learner.toml:ro
       - ./data/tiflash0:/tmp/tiflash/data
       - ./log/tiflash0:/tmp/tiflash/log
     command:
       - --config-file
-      - /config/tiflash.toml
+      - /root/config/tiflash.toml
     depends_on:
       - "tidb0"
     restart: on-failure
