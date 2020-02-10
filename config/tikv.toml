@@ -19,6 +19,7 @@ labels = {  }
 # This section will be overwritten by command line parameters
 
 [metric]
+address = "pushgateway:9091"
 #address = "172.16.30.31:9531"
 #interval = "15s"
 #job = "tikv"

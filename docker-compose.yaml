@@ -62,6 +62,7 @@ services:
       - "8123:8123"
       - "9009:9009"
       - "20170:20170"
+      - "8234:8234"
     volumes:
       - ./config/tiflash.toml:/root/config/tiflash.toml:ro
       - ./config/tiflash-users.toml:/root/config/tiflash-users.toml:ro
@@ -83,12 +84,14 @@ services:
         :8123
         :9009
         :20170
+        :8234
       TALK:
         ${TIFLASH_ADDR}:3930
         ${TIFLASH_ADDR}:9000
         ${TIFLASH_ADDR}:8123
         ${TIFLASH_ADDR}:9009
         ${TIFLASH_ADDR}:20170
+        ${TIFLASH_ADDR}:8234
       TIMEOUT_CLIENT: 3600s
       TIMEOUT_CLIENT_FIN: 3600s
       TIMEOUT_SERVER: 3600s
@@ -96,4 +99,42 @@ services:
       TIMEOUT_TUNNEL: 3600s
     depends_on:
       - "tidb0"
+    restart: on-failure
+# monitors
+  pushgateway:
+    image: prom/pushgateway:v0.3.1
+    command:
+      - --log.level=error
+    ports:
+      - "9091:9091"
+    restart: on-failure
+  prometheus:
+    user: root
+    image: prom/prometheus:v2.2.1
+    command:
+      - --log.level=error
+      - --storage.tsdb.path=/data/prometheus
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./config/pd.rules.yml:/etc/prometheus/pd.rules.yml:ro
+      - ./config/tikv.rules.yml:/etc/prometheus/tikv.rules.yml:ro
+      - ./config/tidb.rules.yml:/etc/prometheus/tidb.rules.yml:ro
+      - ./data:/data
+    restart: on-failure
+  grafana:
+    image: grafana/grafana:6.0.1
+    user: "0"
+    environment:
+      GF_LOG_LEVEL: error
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      GF_PATHS_CONFIG: /etc/grafana/grafana.ini
+    volumes:
+      - ./config/grafana:/etc/grafana
+      - ./config/dashboards:/tmp/dashboards
+      - ./data/grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
     restart: on-failure

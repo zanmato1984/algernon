@@ -21,6 +21,13 @@ interserver_http_port = 9009
     data-dir = "/tmp/tiflash/data/tikv-learner"
     config = "config/tikv-learner-debug.toml"
     log-file = "/tmp/tiflash/log/tikv-learner.log"
+[status]
+  # Prometheus metrics port, leaves it empty will disable prometheus pull.
+  metrics_port = 8234
+  # Prometheus pushgateway address, leaves it empty will disable prometheus push.
+# metrics_addr = "pushgateway:9091"
+  # Prometheus client push interval in second, min=5, max=120, default=15.
+# metrics_interval = 10
 [logger]
   count = 10
   errorlog = "/tmp/tiflash/log/tiflash-error.log"

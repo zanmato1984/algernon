@@ -17,6 +17,7 @@ level = "info"
 [log.file]
 
 [metric]
+address = "pushgateway:9091"
 
 [schedule]
 leader-schedule-limit = 4

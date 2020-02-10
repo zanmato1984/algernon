@@ -36,6 +36,7 @@ ssl-key = ""
 
 [status]
 report-status = true
+metrics-addr = "pushgateway:9091"
 
 [performance]
 cross-join = true
