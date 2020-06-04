@@ -37,6 +37,7 @@ region-split-size = "96MB"
 
 [rocksdb]
 wal-dir = ""
+max-open-files = 1000
 
 [rocksdb.defaultcf]
 block-cache-size = "10GB"
@@ -48,6 +49,7 @@ block-cache-size = "4GB"
 block-cache-size = "4GB"
 
 [raftdb]
+max-open-files = 1000
 
 [raftdb.defaultcf]
 block-cache-size = "1GB"
