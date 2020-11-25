@@ -14,7 +14,7 @@ log-file="./log/tikv0/tikv.log"
 [server]
 labels = {  }
 addr="0.0.0.0:20160"
-advertise-addr="host.docker.internal:20160"
+advertise-addr="tikv-gateway0:20160"
 
 [storage]
 data-dir="./data/tikv0/" 

@@ -74,6 +74,23 @@ services:
     depends_on:
       - "tidb0"
     restart: on-failure
+  tikv-gateway0:
+    image: tecnativa/tcp-proxy
+    environment:
+      LISTEN:
+        :20160
+        :20180
+      TALK:
+        ${TIKV_ADDR}:20160
+        ${TIKV_ADDR}:20180
+      TIMEOUT_CLIENT: 3600s
+      TIMEOUT_CLIENT_FIN: 3600s
+      TIMEOUT_SERVER: 3600s
+      TIMEOUT_SERVER_FIN: 3600s
+      TIMEOUT_TUNNEL: 3600s
+    depends_on:
+      - "tidb0"
+    restart: on-failure
   tiflash-gateway0:
     image: tecnativa/tcp-proxy
     environment:
