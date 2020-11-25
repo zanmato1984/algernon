@@ -74,6 +74,8 @@ services:
     depends_on:
       - "tidb0"
     restart: on-failure
+    deploy:
+      replicas: 0
   tikv-gateway0:
     image: tecnativa/tcp-proxy
     environment:
@@ -91,6 +93,8 @@ services:
     depends_on:
       - "tidb0"
     restart: on-failure
+    deploy:
+      replicas: 0
   tiflash-gateway0:
     image: tecnativa/tcp-proxy
     environment:
@@ -114,3 +118,5 @@ services:
     depends_on:
       - "tidb0"
     restart: on-failure
+    deploy:
+      replicas: 0
