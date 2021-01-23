@@ -7,24 +7,19 @@ MAC_DOCKER_IP="192.168.65.2"
 # Linux docker uses fixed IP as following.
 LINUX_DOCKER_IP="172.17.0.1"
 
-function export_tiflash_addr() {
-  if [ `uname` == "Darwin" ]; then
-    export TIFLASH_ADDR=${MAC_DOCKER_IP}
-    echo "Mac docker detected."
-  else
-    export TIFLASH_ADDR=${LINUX_DOCKER_IP}
-    echo "Linux docker detected."
+# Export $1 as docker internal.
+function export_addr() {
+  if [ -z $1 ]; then
+    echo "This funciton need a parameter."
+    return
   fi
-  echo "Using TIFLASH_ADDR as $TIFLASH_ADDR."
-}
 
-function export_mysql_host() {
   if [ `uname` == "Darwin" ]; then
-    export MYSQL_HOST=${MAC_DOCKER_IP}
+    eval "export $1=${MAC_DOCKER_IP}"
     echo "Mac docker detected."
   else
-    export MYSQL_HOST=${LINUX_DOCKER_IP}
+    eval "export $1=${LINUX_DOCKER_IP}"
     echo "Linux docker detected."
   fi
-  echo "Using MYSQL_HOST as $MYSQL_HOST."
+  echo "Using $1 as ${!1}."
 }
