@@ -26,7 +26,7 @@ interserver_http_port = 9009
   errorlog = "/tmp/tiflash/log/tiflash-error.log"
   size = "1000M"
   log = "/tmp/tiflash/log/tiflash.log"
-  level = "trace"
+  level = "debug"
 [application]
   runAsDaemon = true
 
