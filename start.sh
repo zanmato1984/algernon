@@ -5,7 +5,7 @@ set -e
 source env.sh
 
 function print_usage() {
-  echo "usage: ./start.sh [dbgkv] [dbgflash | flash]"
+  echo "usage: [VERSION=nightly] ./start.sh [dbgkv] [dbgflash | flash]"
   echo "    default: pd+tidb+tikv"
   echo "    flash: with a tiflash instance"
   echo "    dbgflash: you can start your own tiflash with 'server --config=./config/tiflash-debug.toml'"

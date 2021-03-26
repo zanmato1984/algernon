@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   pd0:
-    image: hub.pingcap.net/qa/pd:${BRANCH:-master}
+    image: pingcap/pd:${VERSION:-nightly}
     ports:
       - "2379:2379"
     volumes:
@@ -21,7 +21,7 @@ services:
       - --log-file=/log/pd.log
     restart: on-failure
   tikv0:
-    image: hub.pingcap.net/qa/tikv:${BRANCH:-master}
+    image: pingcap/tikv:${VERSION:-nightly}
     ports:
       - "20160:20160"
     volumes:
@@ -39,7 +39,7 @@ services:
       - "pd0"
     restart: on-failure
   tidb0:
-    image: hub.pingcap.net/qa/tidb:${BRANCH:-master}
+    image: pingcap/tidb:${VERSION:-nightly}
     ports:
       - "4000:4000"
       - "10080:10080"
@@ -55,7 +55,7 @@ services:
       - "tikv0"
     restart: on-failure
   tiflash0:
-    image: hub.pingcap.net/tiflash/tiflash:${TAG:-master}
+    image: pingcap/tiflash:${VERSION:-nightly}
     ports:
       - "3930:3930"
       - "9000:9000"
