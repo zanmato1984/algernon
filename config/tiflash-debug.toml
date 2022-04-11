@@ -21,12 +21,13 @@ interserver_http_port = 9009
     data-dir = "/tmp/tiflash/data/tikv-learner"
     config = "config/tikv-learner-debug.toml"
     log-file = "/tmp/tiflash/log/tikv-learner.log"
+    log-level = "debug"
 [logger]
   count = 10
   errorlog = "/tmp/tiflash/log/tiflash-error.log"
   size = "1000M"
   log = "/tmp/tiflash/log/tiflash.log"
-  level = "trace"
+  level = "debug"
 [application]
   runAsDaemon = true
 

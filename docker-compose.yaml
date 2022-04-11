@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   pd0:
-    image: hub.pingcap.net/qa/pd:${BRANCH:-master}
+    image: pingcap/pd:${VERSION:-nightly}
     ports:
       - "2379:2379"
     volumes:
@@ -21,7 +21,7 @@ services:
       - --log-file=/log/pd.log
     restart: on-failure
   tikv0:
-    image: hub.pingcap.net/qa/tikv:${BRANCH:-master}
+    image: pingcap/tikv:${VERSION:-nightly}
     ports:
       - "20160:20160"
     volumes:
@@ -39,7 +39,7 @@ services:
       - "pd0"
     restart: on-failure
   tidb0:
-    image: hub.pingcap.net/qa/tidb:${BRANCH:-master}
+    image: pingcap/tidb:${VERSION:-nightly}
     ports:
       - "4000:4000"
       - "10080:10080"
@@ -55,7 +55,7 @@ services:
       - "tikv0"
     restart: on-failure
   tiflash0:
-    image: hub.pingcap.net/tiflash/tiflash:${TAG:-master}
+    image: pingcap/tiflash:${VERSION:-nightly}
     ports:
       - "3930:3930"
       - "9000:9000"
@@ -74,6 +74,27 @@ services:
     depends_on:
       - "tidb0"
     restart: on-failure
+    deploy:
+      replicas: 0
+  tikv-gateway0:
+    image: tecnativa/tcp-proxy
+    environment:
+      LISTEN:
+        :20160
+        :20180
+      TALK:
+        ${TIKV_ADDR}:20160
+        ${TIKV_ADDR}:20180
+      TIMEOUT_CLIENT: 3600s
+      TIMEOUT_CLIENT_FIN: 3600s
+      TIMEOUT_SERVER: 3600s
+      TIMEOUT_SERVER_FIN: 3600s
+      TIMEOUT_TUNNEL: 3600s
+    depends_on:
+      - "tidb0"
+    restart: on-failure
+    deploy:
+      replicas: 0
   tiflash-gateway0:
     image: tecnativa/tcp-proxy
     environment:
@@ -97,3 +118,5 @@ services:
     depends_on:
       - "tidb0"
     restart: on-failure
+    deploy:
+      replicas: 0
