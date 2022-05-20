@@ -14,7 +14,7 @@
 labels = { "tiflash_http_port" = "8123" }
 engine-addr = "tiflash-gateway0:3930"
 status-addr = "0.0.0.0:20181"
-advertise-status-addr = "tiflash0:20181"
+advertise-status-addr = "tiflash-gateway0:20181"
 
 [storage]
 
