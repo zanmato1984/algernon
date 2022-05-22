@@ -83,12 +83,14 @@ services:
         :8123
         :9009
         :20170
+        :20181
       TALK:
         ${TIFLASH_ADDR}:3930
         ${TIFLASH_ADDR}:9000
         ${TIFLASH_ADDR}:8123
         ${TIFLASH_ADDR}:9009
         ${TIFLASH_ADDR}:20170
+        ${TIFLASH_ADDR}:20181
       TIMEOUT_CLIENT: 3600s
       TIMEOUT_CLIENT_FIN: 3600s
       TIMEOUT_SERVER: 3600s
