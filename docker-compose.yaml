@@ -31,6 +31,7 @@ services:
     command:
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv0:20160
+      - --status-addr=127.0.0.1:20180
       - --pd=pd0:2379
       - --config=/tikv.toml
       - --data-dir=/data
@@ -98,4 +99,47 @@ services:
       TIMEOUT_TUNNEL: 3600s
     depends_on:
       - "tidb0"
+    restart: on-failure
+  ng-monitoring0:
+    image: hub.pingcap.net/qa/ng-monitoring:${BRANCH:-master}
+    ports:
+      - "12020:12020"
+    volumes:
+      - ./data/ng-monitoring0:/data
+      - ./log/ng-monitoring0:/log
+    command:
+      - --pd.endpoints=pd0:2379
+      - --address=0.0.0.0:12020
+      - --advertise-address=ng-monitoring0:12020
+      - --storage.path=/data
+      - --log.path=/log
+    restart: on-failure
+  prometheus0:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/prometheus.yml:ro
+      - ./config/targets.json:/targets.json:ro
+      - ./data/prometheus0:/data
+      - ./log/prometheus0:/log
+    command:
+      - --config.file=/prometheus.yml
+      - --web.external-url=http://127.0.0.1:9090
+      - --web.listen-address=0.0.0.0:9090
+      - --storage.tsdb.path=/data
+    restart: on-failure
+  grafana0:
+    image: grafana/grafana:latest
+    user: "0"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config/grafana:/etc/grafana
+      - ./config/dashboards:/tmp/dashboards
+      - ./data/grafana0:/var/lib/grafana
+    environment:
+      GF_LOG_LEVEL: error
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      GF_PATHS_CONFIG: /etc/grafana/grafana.ini
     restart: on-failure

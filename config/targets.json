@@ -1,0 +1,43 @@
+[
+	{
+		"targets": [
+			"pd0:2379"
+		],
+		"labels": {
+			"job": "pd"
+		}
+	},
+	{
+		"targets": [
+			"tikv0:20180"
+		],
+		"labels": {
+			"job": "tikv"
+		}
+	},
+	{
+		"targets": [
+			"tidb0:10080"
+		],
+		"labels": {
+			"job": "tidb"
+		}
+	},
+	{
+		"targets": [
+			"tiflash0:8234",
+			"tiflash0:20292"
+		],
+		"labels": {
+			"job": "tiflash"
+		}
+	},
+	{
+		"targets": [
+			"prometheus0:9090"
+		],
+		"labels": {
+			"job": "prometheus"
+		}
+	}
+]
