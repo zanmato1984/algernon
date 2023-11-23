@@ -24,6 +24,7 @@ services:
     image: hub.pingcap.net/qa/tikv:${BRANCH:-master}
     ports:
       - "20160:20160"
+      - "20180:20180"
     volumes:
       - ./config/tikv.toml:/tikv.toml:ro
       - ./data/tikv0:/data
@@ -31,6 +32,9 @@ services:
     command:
       - --addr=0.0.0.0:20160
       - --advertise-addr=tikv0:20160
+      - --status-addr=0.0.0.0:20180
+      - --advertise-status-addr=tikv0:20180
+      - --pd-endpoints=http://pd0:2379
       - --pd=pd0:2379
       - --config=/tikv.toml
       - --data-dir=/data
@@ -55,24 +59,35 @@ services:
       - "tikv0"
     restart: on-failure
   tiflash0:
-    image: hub.pingcap.net/tiflash/tiflash:${TAG:-master}
+    image: hub.pingcap.net/qa/tiflash:${TAG:-master}
     ports:
       - "3930:3930"
-      - "9000:9000"
-      - "8123:8123"
-      - "9009:9009"
       - "20170:20170"
+      - "20190:20190"
     volumes:
       - ./config/tiflash.toml:/root/config/tiflash.toml:ro
-      - ./config/tiflash-users.toml:/root/config/tiflash-users.toml:ro
-      - ./config/tikv-learner.toml:/root/config/tikv-learner.toml:ro
-      - ./data/tiflash0:/tmp/tiflash/data
-      - ./log/tiflash0:/tmp/tiflash/log
+      - ./config/tiflash-proxy.toml:/root/config/tiflash-proxy.toml:ro
+      - ./data/tiflash0:/data
+      - ./log/tiflash0:/log
     command:
-      - --config-file
-      - /root/config/tiflash.toml
+      - --config-file=/root/config/tiflash.toml
+      - --
+      - --tmp_path=/data/tiflash/tmp
+      - --path=/data/tiflash/data
+      - --listen_host=0.0.0.0
+      - --logger.log=/log/tiflash.log
+      - --logger.errorlog=/log/tiflash_error.log
+      - --flash.service_addr=tiflash0:3930
+      - --raft.pd_addr=pd0:2379
+      - --flash.proxy.config=/root/config/tiflash-proxy.toml
+      - --flash.proxy.addr=0.0.0.0:20170
+      - --flash.proxy.advertise-addr=tiflash0:20170
+      - --flash.proxy.status-addr=0.0.0.0:20190
+      - --flash.proxy.advertise-status-addr=tiflash0:20190
+      - --flash.proxy.data-dir=/data/proxy
+      - --flash.proxy.log-file=/log/tiflash_proxy.log
     depends_on:
-      - "tidb0"
+      - "pd0"
     restart: on-failure
   tiflash-gateway0:
     image: tecnativa/tcp-proxy
@@ -97,5 +112,5 @@ services:
       TIMEOUT_SERVER_FIN: 3600s
       TIMEOUT_TUNNEL: 3600s
     depends_on:
-      - "tidb0"
+      - "pd0"
     restart: on-failure
